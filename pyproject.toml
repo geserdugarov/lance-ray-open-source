@@ -44,6 +44,9 @@ docs = [
     "mkdocs-material>=9.0.0",
     "mkdocs-awesome-pages-plugin>=2.9.0",
 ]
+pdf = [
+    "opendataloader-pdf>=2.4.7",
+]
 
 [project.urls]
 Homepage = "https://github.com/lancedb/lance-ray"

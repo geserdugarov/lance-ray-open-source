@@ -51,6 +51,7 @@ lance_ray/__init__.py            <-- public exports
     read_lance, write_lance, add_columns,
     create_scalar_index, create_index, optimize_indices,
     compact_files, compact_database,
+    convert_pdf_to_markdown,
     LanceFragmentWriter, LanceFragmentCommitter
 
 lance_ray/io.py                  <-- read_lance, write_lance, add_columns
@@ -60,6 +61,8 @@ lance_ray/fragment.py            <-- LanceFragmentWriter, write_fragment()
 lance_ray/index.py               <-- create_scalar_index, create_index,
                                      optimize_indices, vector index plumbing
 lance_ray/compaction.py          <-- compact_files, compact_database
+lance_ray/pdf.py                 <-- convert_pdf_to_markdown (wraps the
+                                     optional opendataloader-pdf package)
 lance_ray/utils.py               <-- namespace handling, version shims,
                                      array_split, initial-bases helpers
 lance_ray/pandas.py              <-- pandas <-> arrow helper
@@ -79,6 +82,7 @@ lance_ray/pandas.py              <-- pandas <-> arrow helper
 | `optimize_indices` | `index.py` | Incrementally absorb new data into existing indices (`DatasetOptimizer.optimize_indices`). |
 | `compact_files` | `compaction.py` | Distributed `Compaction.plan` → execute → commit. |
 | `compact_database` | `compaction.py` | `compact_files` for every table under a namespace. |
+| `convert_pdf_to_markdown` | `pdf.py` | Thin wrapper around the optional `opendataloader-pdf` package that pins its `format="markdown"` output. Runs entirely on the driver — no Ray Data or pylance involvement. |
 
 ## 1.4 Internal helpers in `utils.py`
 

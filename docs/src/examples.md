@@ -63,6 +63,37 @@ add_columns(
 )
 ```
 
+## PDF to Markdown
+
+Convert one or more PDF files to Markdown using
+[opendataloader-pdf](https://github.com/opendataloader-project/opendataloader-pdf).
+Install the optional extra first:
+
+```shell
+pip install "lance-ray[pdf]"
+```
+
+Then convert files or directories — directories are processed recursively:
+
+```python
+from lance_ray import convert_pdf_to_markdown
+
+# A single PDF
+convert_pdf_to_markdown("./books/sample.pdf", output_dir="./out")
+
+# A whole directory of PDFs, with images embedded as base64
+convert_pdf_to_markdown(
+    ["./books"],
+    output_dir="./out",
+    image_output="embedded",
+    image_format="jpeg",
+)
+```
+
+The underlying library spawns a JVM process per call, so prefer batching every
+PDF into a single invocation rather than calling `convert_pdf_to_markdown` in a
+loop.
+
 ## Using Namespace
 
 For enterprise environments with metadata catalogs, you can use Lance Namespace integration:

@@ -17,6 +17,7 @@ from .datasink import LanceFragmentCommitter
 from .fragment import LanceFragmentWriter
 from .index import create_index, create_scalar_index, optimize_indices
 from .io import add_columns, read_lance, write_lance
+from .pdf import convert_pdf_to_markdown
 
 __all__ = [
     "read_lance",
@@ -27,6 +28,7 @@ __all__ = [
     "optimize_indices",
     "compact_files",
     "compact_database",
+    "convert_pdf_to_markdown",
     "LanceFragmentWriter",
     "LanceFragmentCommitter",
 ]
