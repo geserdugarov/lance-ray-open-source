@@ -536,11 +536,15 @@ class PartitionRouter:
 
 ### 4.2 `IvfShardActor`
 
-A Ray actor (`@ray.remote`) that owns one shard:
+A Ray actor that owns one shard. The implementation is split into
+two names: `_IvfShardActor` is the plain Python class containing
+the methods (exposed so unit tests can drive them with
+fakes/monkeypatching against the pylance surface), and the public
+`IvfShardActor = ray.remote(_IvfShardActor)` is the Ray-decorated
+actor class callers construct with `IvfShardActor.remote(...)`.
 
 ```python
-@ray.remote
-class IvfShardActor:
+class _IvfShardActor:
     def __init__(
         self,
         dataset_uri: str,
@@ -600,6 +604,15 @@ class IvfShardActor:
                 self._actor_index, num_partitions,
             )
         self._owned_ids = list(partition_ids)
+        # Empty-slice guard: §3.1 specifies that
+        # prewarm_index(..., partition_ids=[]) means "warm every
+        # partition". An actor whose owned slice happens to be empty
+        # (num_partitions < num_actors at this actor_index, or an
+        # explicit empty override) must skip the call entirely —
+        # forwarding [] would warm the whole index on every empty
+        # shard and defeat the sharding.
+        if not self._owned_ids:
+            return
         # USES new pylance API §3.1:
         self._dataset.prewarm_index(
             self._index_name, partition_ids=self._owned_ids,
@@ -673,6 +686,11 @@ class IvfShardActor:
             self._uri, session=self._session,
             storage_options=self._storage_options,
         )
+
+# Public, Ray-decorated form. Production callers do
+# `IvfShardActor.remote(...)`; tests import `_IvfShardActor` and
+# call its methods directly.
+IvfShardActor = ray.remote(_IvfShardActor)
 ```
 
 ### 4.3 `InvalidateOrchestrator`
