@@ -497,7 +497,7 @@ lance_ray/distributed_cache/
     shard_actor.py         # IvfShardActor (Ray @ray.remote class)
     coordinator.py         # DistributedAnnSearch (broadcast-to-all),
                            # InvalidateOrchestrator
-    config.py              # ShardingConfig, ActorConfig
+    config.py              # ActorConfig, SearchConfig
 ```
 
 `centroids.py` (the `CoordinatorIvfModel` from §4.5) is **not**
