@@ -786,6 +786,18 @@ class DistributedAnnSearch:
         return merge_top_k(partials, k=k)
 ```
 
+**`merge_top_k` contract** (free helper in `coordinator.py`): empty
+partials are dropped before `pa.concat_tables` so an actor that
+found zero candidates within its owned slice does not poison the
+schema-resolution step. When *every* partial is empty, the first
+partial is returned verbatim so the caller still receives a table
+with the right schema and zero rows. The `partials` list itself
+must be non-empty — that case is a caller-side bug (no actors were
+queried) rather than a "no results" condition. The result is sorted
+ascending by `_distance` and sliced to `k`; when the combined row
+count is below `k` the slice is a no-op and all sorted rows are
+returned.
+
 **Why this works without a coordinator centroid table**: each
 actor's scanner already does the centroid → top-`nprobes` lookup
 internally as the first stage of IVF probing
