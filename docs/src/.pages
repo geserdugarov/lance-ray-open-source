@@ -4,6 +4,7 @@ nav:
   - Read: read.md
   - Write: write.md
   - Index: distributed-indexing.md
+  - Distributed Cache: distributed-cache.md
   - Compaction: compaction.md
   - Data Evolution: data-evolution.md
   - Examples: examples.md

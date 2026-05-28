@@ -43,6 +43,7 @@ The built documentation will be in the `site/` directory.
   - `read.md` - Read operations guide
   - `write.md` - Write operations guide  
   - `distributed-indexing.md` - Distributed indexing guide
+  - `distributed-cache.md` - Distributed IVF cache guide
   - `compaction.md` - Distributed compaction guide
   - `data-evolution.md` - Data evolution guide
   - `examples.md` - Usage examples
